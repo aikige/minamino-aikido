@@ -1,11 +1,20 @@
 {%- assign target_page = site.pages | where: "path", include.path | first -%}  
 {%- unless target_page -%}
-{%-  assign target_page = site.posts | where: "path", include.path | first -%}
+{%-   assign target_page = site.posts | where: "path", include.path | first -%}
 {%- endunless -%}
 {%- unless target_page -%}
-{%-  capture post_path -%}_posts/{{include.path}}{%- endcapture -%}
-{%-  assign target_page = site.posts | where: "path", post_path | first -%}
+{%-   capture post_path -%}_posts/{{include.path}}{%- endcapture -%}
+{%-   assign target_page = site.posts | where: "path", post_path | first -%}
 {%- endunless -%}
-{%- if target_page and target_page.title -%}
-<a href="{{target_page.url}}">{{target_page.title}}</a>
+{%- if include.id -%}
+{%-   capture id -%}#{{include.id}}{%- endcapture -%}
+{%- else -%}
+{%-   assign id = "" -%}
+{%- endif -%}
+{%- if target_page -%}
+{%-   if include.title -%}
+<a href="{{target_page.url}}{{id}}">{{include.title}}</a>
+{%-   else -%}
+<a href="{{target_page.url}}{{id}}">{{target_page.title}}</a>
+{%-   endif -%}
 {%- endif -%}
