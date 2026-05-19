@@ -3,135 +3,135 @@ layout: default
 ---
 
 <div class="home">
-  {% if site.embed_tweets %}
+  {%- if site.embed_tweets -%}
   <!-- *** embed tweet mode *** -->
-  {%  capture main_content %}
+  {%-   capture main_content -%}
   <div class="home-w-sidebar">
     {{ content }}
   </div>
   <!-- sidebar for tweets -->
   <div class="tweet-container">
-  {%  include tweet-block.html %}
+    {%- include tweet-block.html -%}
   </div>
-  {%  endcapture %}
-  {% elsif site.home_pages %}
+  {%-   endcapture -%}
+  {%- elsif site.home_pages -%}
   <!-- *** home page list mode *** -->
-  {%  capture main_content %}
+  {%-   capture main_content -%}
   <div class="home-w-sidebar">
     {{ content }}
   </div>
   <div class="home-sidebar-container">
-    {% for path in site.home_pages %}
-    {%  assign page = site.pages | where: "path", path | first %}
-    {%  if page.title %}
-    {%    assign background_image_style = "" %}
-    {%    if page.image %}
-    {%      capture background_image_style %}style="background-image: url({{ page.image | relative_url }});"{% endcapture %}
-    {%    endif %}
+    {%- for path in site.home_pages -%}
+    {%-   assign page = site.pages | where: "path", path | first -%}
+    {%-   if page.title -%}
+    {%-     assign background_image_style = "" -%}
+    {%-     if page.image -%}
+    {%-       capture background_image_style -%}style="background-image: url({{ page.image | relative_url }});"{%- endcapture -%}
+    {%-     endif -%}
     <div class="card" {{ background_image_style }}>
       <div class="post-info" style="text-align:center">
         <a href="{{ page.url | relative_url }}">{{ page.title | escape }}</a>
-        {% if page.description %}
+        {%- if page.description -%}
         <p class="post-meta">{{ page.description }}</p>
-        {% endif %}
+        {%- endif -%}
       </div>
     </div>
-    {%  endif %}
-    {% endfor %}
+    {%-   endif -%}
+    {%- endfor -%}
   </div><!-- end:home-sidebar-container -->
-  {%  endcapture %}
-  {% else %}
+  {%-   endcapture -%}
+  {%- else -%}
   <!-- *** simple home mode *** -->
-  {%  capture main_content %}
+  {%-   capture main_content -%}
   <div class="home-content">
     {{ content }}
   </div>
-  {%  endcapture %}
-  {% endif %}
+  {%-   endcapture -%}
+  {%- endif -%}
 
-  {% if site.paginate %}
-  {%  unless paginator.previous_page %}
+  {%- if site.paginate -%}
+  {%-   unless paginator.previous_page -%}
   <!-- content is shown for first page only -->
   {{ main_content }}
-  {% endunless %}
-  {% else %}
+  {%-   endunless -%}
+  {%- else -%}
   {{ main_content }}
-  {% endif %}
+  {%- endif -%}
 
-  {% if site.paginate %}
-  {%  assign posts = paginator.posts %}
-  {% else %}
-  {%  assign posts = site.posts %}
-  {% endif %}
+  {%- if site.paginate -%}
+  {%-   assign posts = paginator.posts -%}
+  {%- else -%}
+  {%-   assign posts = site.posts -%}
+  {%- endif -%}
 
-  {% if posts.size > 0 %}
+  {%- if posts.size > 0 -%}
   <!-- start posts -->
-  {%  if site.post_list_title %}
+  {%-   if site.post_list_title -%}
   <div class="post-list-title">
     <h2 class="card-list-title">{{ site.post_list_title }}</h2>
   </div>
-  {%  endif %}
-  {%  assign date_format = site.minamino.date_format | default: "%F" %}
+  {%-   endif -%}
+  {%-   assign date_format = site.minamino.date_format | default: "%F" -%}
   <div class="post-list">
     <div class="card-container">
-      {% for post in posts %}
-      {%  if post.image %}
-      {%    capture background_image_style %}style="background-image: url({{ post.image | relative_url }});"{% endcapture %}
-      {%  else %}
-      {%    capture background_image_style %}style="background-image: url({{ "/assets/img/no_image.jpg" | relative_url}});"{% endcapture %}
-      {%  endif %}
+      {%- for post in posts -%}
+      {%-  if post.image -%}
+      {%-    capture background_image_style -%}style="background-image: url({{ post.image | relative_url }});"{%- endcapture -%}
+      {%-  else -%}
+      {%-    capture background_image_style -%}style="background-image: url({{ "/assets/img/no_image.jpg" | relative_url}});"{%- endcapture -%}
+      {%-  endif -%}
       <div class="card" {{ background_image_style }}>
         <div class="post-info">
           <div class="post-meta">{{ post.date | date: date_format }}</div>
           <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
         </div>
       </div>
-      {% endfor %}<!-- end:for post in posts -->
+      {%- endfor -%}<!-- end:for post in posts -->
     </div><!-- end:card-container -->
   </div><!-- end:post-list -->
   <!-- end posts -->
-  {%  if site.sidebar_list %}
+  {%-   if site.sidebar_list -%}
   <!-- start post sidebar -->
   <div class="post-sidebar">
     <div class="card-container">
       <!-- sidebar includes -->
-      {% if site.sidebar_list %}
-      {%  for sidebar in site.sidebar_list%}
+      {%- if site.sidebar_list -%}
+      {%-   for sidebar in site.sidebar_list%}
       <div class="card">
-        {% include {{sidebar}} %}
+        {%- include {{sidebar}} -%}
       </div>
-      {%  endfor %}
-      {% endif %}
+      {%-   endfor -%}
+      {%- endif -%}
       <!-- pickup posts -->
-      {% for path in site.pickup_posts %}
-      {%  assign item = site.pages | where: "path", path | first %}
-      {%  unless item %}
-      {%    assign item = site.posts | where: "path", path | first %}
-      {%  endunless %}
-      {%  unless item %}
-      {%    capture post_path %}_posts/{{path}}{% endcapture %}
-      {%    assign item = site.posts | where: "path", post_path | first %}
-      {%  endunless %}
-      {%  if item.image %}
-      {%    capture background_image_style %}style="background-image: url({{ item.image | relative_url }});"{% endcapture %}
-      {%  else %}
-      {%    capture background_image_style %}style="background-image: url({{ "/assets/img/no_image.jpg" | relative_url}});"{% endcapture %}
-      {%  endif %}
+      {%- for path in site.pickup_posts -%}
+      {%-   assign item = site.pages | where: "path", path | first -%}
+      {%-   unless item -%}
+      {%-     assign item = site.posts | where: "path", path | first -%}
+      {%-   endunless -%}
+      {%-   unless item -%}
+      {%-     capture post_path -%}_posts/{{path}}{%- endcapture -%}
+      {%-     assign item = site.posts | where: "path", post_path | first -%}
+      {%-   endunless -%}
+      {%-   if item.image -%}
+      {%-     capture background_image_style -%}style="background-image: url({{ item.image | relative_url }});"{%- endcapture -%}
+      {%-   else -%}
+      {%-     capture background_image_style -%}style="background-image: url({{ "/assets/img/no_image.jpg" | relative_url}});"{%- endcapture -%}
+      {%-   endif -%}
       <div class="card" {{background_image_style}}>
         <div class="post-info">
-          {% if item.date %}
+          {%- if item.date -%}
           <div class="post-meta">{{ item.date | date: date_format }}</div>
-          {% endif %}
+          {%- endif -%}
           <a class="post-link" href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
         </div>
       </div>
-      {% endfor %}
+      {%- endfor -%}
     </div><!-- end:card-container -->
   </div><!-- end:post-sidebar -->
   <!-- end sidebar -->
-  {%  endif %}
-  {% endif %}
-  {% include pagination.html %}
+  {%-   endif -%}
+  {%- endif -%}
+  {%- include pagination.html -%}
 
 </div><!-- home -->
 <!-- vim: set sts=2 sw=2 expandtab: -->
