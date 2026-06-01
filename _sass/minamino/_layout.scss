@@ -2,25 +2,36 @@
  * Site header
  */
 
+:root {
+  // Offset for fixed site-header.
+  scroll-padding-top: 100px;
+}
+
 .site-header {
   border-top: 5px solid $grey-color-dark;
   border-bottom: 1px solid $grey-color-light;
   min-height: $spacing-unit * 1.865;
+  background: $background-color;
 
   // Positioning context for the mobile navigation icon
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  top: 0;
 }
 
 .site-header > .wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+  @include media-query($on-2row) {
+    padding-left: $menu-icon-size + $spacing-unit;
+  }
 }
 
 .site-title {
-  @include relative-font-size(1.5);
+  font-size: clamp($base-font-size,4vw,$base-font-size * 1.5);  /* variable font */
   font-weight: 300;
-  line-height: $title-line-height;
+  line-height: $spacing-unit;
   letter-spacing: -1px;
   margin-top: $vspacing-unit;
   margin-bottom: $vspacing-unit;
@@ -28,15 +39,11 @@
   &, &:visited {
     color: $grey-color-dark;
   }
-  @include media-query($on-palm) {
-    padding-right: 36px;
-  }
 }
 
 .site-nav {
   line-height: $title-line-height * $base-font-size * 1.5;
   margin-left: auto;
-  text-align: right;
 
   .nav-trigger {
       display: none;
@@ -56,45 +63,64 @@
 
   @include media-query($on-2row) {
     position: absolute;
-    top: 11px;
-    right: $spacing-unit / 2;
+    position: fixed;
+    z-index: 100;
+    top: 16px;
+    left: $spacing-unit / 2;
     background-color: $background-color;
     border: 1px solid $grey-color-light;
     border-radius: 5px;
-    text-align: right;
 
     label[for="nav-trigger"] {
-      display: block;
-      float: right;
-      width: 36px;
-      height: 36px;
+      display: inline-block;
+      width: $menu-icon-size;
+      height: $menu-icon-size;
       z-index: 2;
       cursor: pointer;
     }
 
     .menu-icon {
-      display: block;
-      float: right;
-      width: 36px;
-      height: 26px;
-      line-height: 0;
-      padding-top: 10px;
+      display: inline-block;
+      width: $menu-icon-size;
+      line-height: 15px;  // icon-height;
+      padding-top: ($menu-icon-size - 15px) / 2;
       text-align: center;
 
       > svg {
         fill: $grey-color-dark;
-        text-align: -2px;
       }
     }
 
-    input ~ .trigger {
+    #nav-trigger ~ .menu {
       clear: both;
       display: none;
     }
 
-    input:checked ~ .trigger {
+    #nav-trigger ~ .menu-bg {
+      display: none;
+    }
+
+    #nav-trigger:checked ~ .menu {
+      position: fixed;
+      top: 16px;
+      left: $spacing-unit / 2;
       display: block;
       padding-bottom: 5px;
+      background-color: $background-color;
+      border: 1px solid $grey-color-light;
+      border-radius: 5px;
+      z-index: 100;
+    }
+
+    #nav-trigger:checked ~ .menu-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99;
+      background-color: rgba(0,0,0,0.1);
     }
 
     .page-link {
@@ -104,7 +130,6 @@
       &:not(:last-child) {
         margin-right: 0;
       }
-      margin-left: 20px;
     }
   }
 }
@@ -314,6 +339,7 @@ img.top {
  */
 .page-content {
   padding: $vspacing-unit 0;
+  margin-top: $spacing-unit * 2 + 6;
 }
 
 .page-heading {
