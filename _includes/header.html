@@ -6,6 +6,9 @@
     <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
 
     {%- if page_paths -%}
+      <script type="text/javascript">
+        function hideNav() { document.getElementById('nav-trigger').checked = false }
+      </script>
       <nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
@@ -13,14 +16,7 @@
             {% include menu-icon.svg %}
           </span>
         </label>
-        <script type="text/javascript">
-          function hideNav() { document.getElementById('nav-trigger').checked = false }
-        </script>
-        <div class="menu-bg" onclick="hideNav()"></div>
         <div class="menu" onclick="hideNav()">
-          <span class="menu-icon">
-          {% include menu-icon.svg %}
-          </span>
           {%- for path in page_paths -%}
             {%- assign my_page = site.pages | where: "path", path | first -%}
             {%- if my_page.title -%}
@@ -30,6 +26,7 @@
           <a class="page-link icon" href="{{ "/" | relative_url }}">{% include icon-home.svg %}</a>
         </div>
       </nav>
+      <div class="menu-bg" onclick="hideNav()"></div>
     {%- endif -%}
   </div>
 </header>
