@@ -63,9 +63,8 @@
 
   @include media-query($on-2row) {
     position: absolute;
-    position: fixed;
     z-index: 100;
-    top: 16px;
+    top: (($spacing-unit * 2) - $menu-icon-size - 2)/2;
     left: $spacing-unit / 2;
     background-color: $background-color;
     border: 1px solid $grey-color-light;
@@ -73,10 +72,14 @@
 
     label[for="nav-trigger"] {
       display: inline-block;
+      display: block;
       width: $menu-icon-size;
       height: $menu-icon-size;
       z-index: 2;
       cursor: pointer;
+    }
+    #nav-trigger:checked ~ label[for="nav-trigger"] {
+      width: 100%;
     }
 
     .menu-icon {
@@ -91,36 +94,13 @@
       }
     }
 
+    /* the pop-up menu */
     #nav-trigger ~ .menu {
       clear: both;
       display: none;
     }
-
-    #nav-trigger ~ .menu-bg {
-      display: none;
-    }
-
     #nav-trigger:checked ~ .menu {
-      position: fixed;
-      top: 16px;
-      left: $spacing-unit / 2;
       display: block;
-      padding-bottom: 5px;
-      background-color: $background-color;
-      border: 1px solid $grey-color-light;
-      border-radius: 5px;
-      z-index: 100;
-    }
-
-    #nav-trigger:checked ~ .menu-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      z-index: 99;
-      background-color: rgba(0,0,0,0.1);
     }
 
     .page-link {
@@ -132,6 +112,21 @@
       }
     }
   }
+}
+
+/* show an contents-overlay when the pop-up menu appears */
+div.menu-bg {
+  display: none;
+}
+nav:has(#nav-trigger:checked) ~ div.menu-bg {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+  background-color: rgba(0,0,0,0.1);
 }
 
 /**
@@ -169,11 +164,11 @@
   }
   .footer-col-1 {
     flex: none;
-    width: 30%;
+    min-width: 30%;
   }
   .footer-col-2 {
     flex: none;
-    width: 20%;
+    min-width: 20%;
   }
   .footer-col-3 {
     flex: 1;
@@ -245,7 +240,10 @@
   .post-list {
     grid-column: 1/3;
     .card-container {
-      grid-template-columns: repeat(auto-fit, minmax($card-unit-width, 1fr));
+      grid-template-columns: 1fr 1fr;
+      @include media-query($on-1row) {
+        grid-template-columns: 1fr;
+      }
     }
   }
   .post-sidebar {
