@@ -217,42 +217,50 @@ nav:has(#nav-trigger:checked) ~ div.menu-bg {
   display: grid;
   gap: $card-spacing;
   grid-template-columns: 1fr 1fr 1fr;
-  @include media-query($on-2row) {
-    display: block;
-  }
-  .home-content {
+  >.home-content {
     grid-column: 1/4;
   }
-  .home-w-sidebar {
+  >.home-w-sidebar {
     grid-column: 1/3;
   }
-  .tweet-container {}
-  .home-sidebar-container {
+  >.tweet-container {}
+  >.home-sidebar-container {
     grid-template-columns: 1fr;
     grid-auto-rows: 210px;
   }
-  .post-list-title {
-    grid-column: 1/3;
+  >.post-list-title {
+    grid-column: 1/4;
     .card-list-title {
       margin-bottom: 0;
     }
   }
-  .post-list {
+  >.post-list {
     grid-column: 1/3;
-    .card-container {
+    >.card-container {
       grid-template-columns: 1fr 1fr;
       @include media-query($on-1row) {
         grid-template-columns: 1fr;
       }
     }
   }
-  .post-sidebar {
-    .card-container {
+  >.post-sidebar {
+    >.card-container {
       grid-template-columns: 1fr;
     }
   }
-  nav.pagination {
+  >nav.pagination {
     grid-column: 1/4;
+  }
+  @include media-query($on-2row) {
+    // Change 1-row layout.
+    grid-template-columns: 1fr;
+    >.home-content,
+    >.home-w-sidebar,
+    >.post-list,
+    >.post-list-title,
+    >nav.pagination {
+      grid-column: auto;
+    }
   }
 }
 
